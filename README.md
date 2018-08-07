@@ -1,21 +1,19 @@
-# TriCTree
+# ABCDE - A personal R package 
 
-An R package for implementing the "Trichotomous Classification Tree (TriCTree)" algorithm. 
-
-Reference: Zhu Y and Fang J (2016). Logistic regression-based trichotomous classification tree and its application in medical diagnosis. *Med Decis Making*, 36(8):973-89. doi: 10.1177/0272989X15618658. 
+An R package for my own R functions
 
 ## Installation
 
-The latest version of the `TriCTree` package is available at GitHub [taotliu/TriCTree](https://github.com/taotliu/TriCTree). It requires the `devtools` package to be installed in R. If you do not have devtools in your R program, use the code `install.packages("devtools")` to install the devtools package first. Then run the following codes to install the `TriCTree` package.
+The latest version of the `abcde` package is available at GitHub [taotliu/abcde](https://github.com/taotliu/abcde). It requires the `devtools` package to be installed in R. If you do not have devtools in your R program, use the code `install.packages("devtools")` to install the devtools package first. Then run the following codes to install the `abcde` package.
 
 ```R
 
 install.packages("devtools")
 library(devtools)
-devtools::install_github("taotliu/TriCTree")
-library(TriCTree)
+devtools::install_github("taotliu/abcde")
+library(abcde)
 ```
 
 ## Example
 
-The following `R` code example demonstrates the use of the `TriCTree` package.
+The following `R` code example demonstrates the use of the `abcde` package.
