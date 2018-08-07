@@ -1,4 +1,4 @@
-
+library(qwraps2)
 #' A Summary Table Function
 #'
 #' This function allows you to generate a summary table of your data.
