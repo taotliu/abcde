@@ -36,7 +36,7 @@ summary_tab = function(xx, ref = NULL){
       for(j in 1:length(foo)){
         #######################################
         #### change to others, eg n_perc0() ###
-        stattt = n_perc(xx[, i] == foo.nm[j], na_rm = T)
+        stattt = n_perc(xx[, i] == foo.nm[j], na_rm = T, show_denom = "never")
         #######################################
         if(j == 1)
           outp = rbind(outp, c(namesss[i], foo.nm[j], stattt))

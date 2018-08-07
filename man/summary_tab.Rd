@@ -16,6 +16,7 @@ This function allows you to generate a summary table of your data.
 }
 \examples{
 summary_tab()
+summary_tab(iris)
 }
 \keyword{Summary}
 \keyword{Table}
