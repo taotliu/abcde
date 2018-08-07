@@ -17,3 +17,9 @@ library(abcde)
 ## Example
 
 The following `R` code example demonstrates the use of the `abcde` package.
+
+```R
+library(dplyr)
+glimpse(iris)
+summary_tab(iris)
+```
