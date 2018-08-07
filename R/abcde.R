@@ -8,6 +8,7 @@ library(qwraps2)
 #' @export
 #' @examples
 #' summary_tab()
+#' summary_tab(iris)
 summary_tab = function(xx, ref = NULL){
   cat("N =", dim(xx)[1], "\n")
   n = dim(xx)[2]
