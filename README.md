@@ -22,4 +22,15 @@ The following `R` code example demonstrates the use of the `abcde` package.
 library(dplyr)
 glimpse(iris)
 summary_tab(iris)
+
+N = 150 
+     Variable       Level        Median (IQR) or count (%) (N = 150)
+[1,] "Sepal.Length" ""           "5.80 (5.10, 6.40)"                
+[2,] "Sepal.Width"  ""           "3.00 (2.80, 3.30)"                
+[3,] "Petal.Length" ""           "4.35 (1.60, 5.10)"                
+[4,] "Petal.Width"  ""           "1.30 (0.30, 1.80)"                
+[5,] "Species"      "setosa"     "50 (33.33\\%)"                    
+[6,] ""             "versicolor" "50 (33.33\\%)"                    
+[7,] ""             "virginica"  "50 (33.33\\%)"          
+
 ```
