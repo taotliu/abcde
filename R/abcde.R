@@ -27,7 +27,7 @@ summary_tab = function(xx, ref = NULL){
       outp = rbind(outp, c(namesss[i], "", stattt))
     }
 
-    if(is.character(xx[, i])){
+    if(is.character(xx[, i]) | is.factor(xx[, i]) ){
       foo = table(xx[, i])
       if(!is.null(ref))
         foo = table(ref[, i])
