@@ -1,4 +1,4 @@
-library(qwraps2)
+
 #' A Summary Table Function
 #'
 #' This function allows you to generate a summary table of your data.
@@ -9,44 +9,133 @@ library(qwraps2)
 #' @examples
 #' summary_tab()
 #' summary_tab(iris)
-summary_tab = function(xx, ref = NULL){
-  cat("N =", dim(xx)[1], "\n")
-  n = dim(xx)[2]
-  namesss = colnames(xx)
+#'
+#'
+#'
+#'
+#'
 
-  outp = NULL
-  for(i in 1:n){
-    na.ct = sum(is.na(xx[i]))
 
-    if(is.numeric(xx[, i])){
-      #######################################
-      #### change to others, eg mean_sd() ###
-      stattt = median_iqr(xx[, i], na_rm = T, show_n = "never")
-      #######################################
-      if(na.ct > 0)
-        stattt = paste(stattt, "; NA = ", na.ct, sep = "")
-      outp = rbind(outp, c(namesss[i], "", stattt))
-    }
 
-    if(is.character(xx[, i]) | is.factor(xx[, i]) ){
-      foo = table(xx[, i])
-      if(!is.null(ref))
-        foo = table(ref[, i])
-      foo.nm = names(foo)
-      for(j in 1:length(foo)){
-        #######################################
-        #### change to others, eg n_perc0() ###
-        stattt = n_perc(xx[, i] == foo.nm[j], na_rm = T, show_denom = "never")
-        #######################################
-        if(j == 1)
-          outp = rbind(outp, c(namesss[i], foo.nm[j], stattt))
-        else
-          outp = rbind(outp, c("", foo.nm[j], stattt))
-      }
-      if(na.ct > 0)
-        outp = rbind(outp, c("", "NA", na.ct))
-    }
+
+con_sum00 = function(xx){
+  na.ct = sum(is.na(xx))
+  ###########################
+  aaa = round(quantile(xx, prob = c(.5, 0.25, 0.75), na.rm = T), 2)
+  ############################
+  stattt = paste(aaa[1], " (", aaa[2], ", ", aaa[3], ")", sep = "")
+  if(na.ct > 0)
+    stattt = paste(stattt, "; NA = ", na.ct, sep = "")
+  stattt
+}
+
+
+con_summ = function(x, by, test){
+  by_cat = unique(by)
+  output = c("", "")
+  for(vv in by_cat){
+    foo = con_sum00(x[by == vv])
+    output = c(output, foo)
   }
-  colnames(outp) = c("Variable", "Level", paste("Median (IQR) or count (%)", " (N = ", dim(xx)[1],")", sep=""))
+  all = con_sum00(x)
+  output = c(output, all)
+  if(test)
+    output = c(output,
+               paste(signif(t.test(x ~ by)$p.value, 3), "(t-test);",
+                     signif(wilcox.test(x ~ by, exact = F)$p.value, 3), "(Rank-sum test)"))
+  output
+}
+
+
+
+
+
+
+dis_sum00 = function(xx, ref = table(xx)){
+  na.ct = sum(is.na(xx))
+  foo.nm = names(ref)
+  outp = NULL
+  for(j in 1:length(ref)){
+    #######################################
+    #### change to others, eg n_perc0() ###
+    # stattt = n_perc(xx[, i] == foo.nm[j], na_rm = T, show_denom = "never")
+    stattt = paste(sum(xx == foo.nm[j], na.rm = T), " (",
+                   round(mean(xx == foo.nm[j], na.rm = T)*100, 2),
+                   "%)", sep = "")
+    #######################################
+    if(j == 1)
+      outp = rbind(outp, c(foo.nm[j], stattt))
+    else
+      outp = rbind(outp, c(foo.nm[j], stattt))
+  }
+  if(na.ct > 0){
+    outp = rbind(outp, c("NA", na.ct))
+  }
   outp
 }
+
+
+dis_summ = function(x, by, test){
+  by_cat = unique(by)
+  output = names(table(x, useNA = "ifany"))
+  for(vv in by_cat){
+    foo = dis_sum00(x[by == vv], ref = table(x))
+    output = cbind(output, foo[, 2])
+  }
+  output[, 1] = foo[, 1]
+  all = dis_sum00(x)
+  output = cbind("", output, all[, 2])
+  if(test){
+    testtype = ""
+    tt = tryCatch(chisq.test(table(x, by, useNA = "no")), error=function(e) e, warning=function(w) w)
+    if(is(tt, "warning")){
+      tt = fisher.test(table(x, by, useNA = "no"))
+      testtype = "(exact)"
+    }
+
+    pvall = rep("", dim(output)[1])
+    pvall[1] = paste(signif(tt$p.value, 3), testtype)
+    output = cbind(output, pvall)
+  }
+
+  output
+}
+
+
+
+
+
+
+summary_tab = function(xlist = c("Age", "Absolute.CD4.Count.(cells/uL)", "Gender"), by = "Told.had.HCV",
+                       data = hcv, test = F){
+  ## done
+  outp = NULL
+  for(i in xlist){
+    #######################################
+    if(is.numeric(data[, i])){
+      tmp = con_summ(data[, i], by= data[, by], test)
+      tmp[1] = i
+      outp = rbind(outp, tmp)
+    }
+    ########################################
+    if(is.character(data[, i]) | is.factor(data[, i]) ){
+      tmp = dis_summ(data[, i], by= data[, by], test)
+      tmp[1, 1] = i
+      outp = rbind(outp, tmp)
+    }
+  }
+  rownames(outp) = NULL
+  if(!test) colnames(outp) = c("Variable", "Level",
+                               paste(by, "  (", unique(data[, by])[1], "; N = ", sum(data[, by] == unique(data[, by])[1]), ")", sep = ""),
+                               paste(by, "  (", unique(data[, by])[2], "; N = ", sum(data[, by] == unique(data[, by])[2]), ")", sep = ""),
+                               paste("All  (N = ", dim(data)[1],  ")", sep = ""))
+  if(test)
+    colnames(outp) = c("Variable", "Level",
+                       paste(by, "  (", unique(data[, by])[1], "; N = ", sum(data[, by] == unique(data[, by])[1]), ")", sep = ""),
+                       paste(by, "  (", unique(data[, by])[2], "; N = ", sum(data[, by] == unique(data[, by])[2]), ")", sep = ""),
+                       paste("All  (N = ", dim(data)[1],  ")", sep = ""),
+                       "p value")
+
+  outp
+}
+
