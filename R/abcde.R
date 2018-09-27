@@ -131,14 +131,16 @@ summary_tab = function(xlist = c("Age", "Absolute.CD4.Count.(cells/uL)", "Gender
     }
   }
   rownames(outp) = NULL
-  if(!test) colnames(outp) = c("Variable", "Level",
-                               paste(by, "  (", unique(data[, by])[1], "; N = ", sum(data[, by] == unique(data[, by])[1]), ")", sep = ""),
-                               paste(by, "  (", unique(data[, by])[2], "; N = ", sum(data[, by] == unique(data[, by])[2]), ")", sep = ""),
+
+  middle =  NULL
+  for(ww in unique(data[, by])){
+    middle = c(middle, paste(by, "  (", ww, "; N = ", sum(data[, by] == ww), ")", sep = ""))
+  }
+
+  if(!test) colnames(outp) = c("Variable", "Level", middle,
                                paste("All  (N = ", dim(data)[1],  ")", sep = ""))
   if(test)
-    colnames(outp) = c("Variable", "Level",
-                       paste(by, "  (", unique(data[, by])[1], "; N = ", sum(data[, by] == unique(data[, by])[1]), ")", sep = ""),
-                       paste(by, "  (", unique(data[, by])[2], "; N = ", sum(data[, by] == unique(data[, by])[2]), ")", sep = ""),
+    colnames(outp) = c("Variable", "Level", middle,
                        paste("All  (N = ", dim(data)[1],  ")", sep = ""),
                        "p value")
 
