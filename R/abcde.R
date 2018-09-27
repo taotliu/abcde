@@ -106,7 +106,12 @@ dis_summ = function(x, by, test){
 
 summary_tab = function(xlist = c("Age", "Absolute.CD4.Count.(cells/uL)", "Gender"), by = "Told.had.HCV",
                        data = hcv, test = F){
-  ## done
+  if(is.null(by)){
+    test = F
+    by = "noMeaning"
+    data$noMeaning = rbinom(dim(data)[1], 1, prob = 0.5)
+  }
+
   outp = NULL
   for(i in xlist){
     #######################################
@@ -134,6 +139,9 @@ summary_tab = function(xlist = c("Age", "Absolute.CD4.Count.(cells/uL)", "Gender
                        paste("All  (N = ", dim(data)[1],  ")", sep = ""),
                        "p value")
 
+
+  if(by == "noMeaning")
+    outp = outp[, c(1, 2, 5)]
   outp
 }
 
