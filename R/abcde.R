@@ -51,7 +51,7 @@ con_summ = function(x, by, test){
 
 
 
-dis_sum00 = function(xx, ref = table(xx)){
+dis_sum00 = function(xx, ref = table(xx), includeNA = F){
   na.ct = sum(is.na(xx))
   foo.nm = names(ref)
   outp = NULL
@@ -68,18 +68,19 @@ dis_sum00 = function(xx, ref = table(xx)){
     else
       outp = rbind(outp, c(foo.nm[j], stattt))
   }
-  if(na.ct > 0){
+  if(na.ct > 0 | includeNA){
     outp = rbind(outp, c("NA", na.ct))
   }
   outp
 }
 
 
+
 dis_summ = function(x, by, test){
   by_cat = unique(by)
   output = names(table(x, useNA = "ifany"))
   for(vv in by_cat){
-    foo = dis_sum00(x[by == vv], ref = table(x))
+    foo = dis_sum00(x[by == vv], ref = table(x), includeNA = sum(is.na(x))>0)
     output = cbind(output, foo[, 2])
   }
   output[, 1] = foo[, 1]
@@ -100,6 +101,8 @@ dis_summ = function(x, by, test){
 
   output
 }
+
+
 
 
 
