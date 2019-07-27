@@ -21,7 +21,7 @@
 con_sum00 = function(xx){
   na.ct = sum(is.na(xx))
   ###########################
-  aaa = round(quantile(xx, prob = c(.5, 0.25, 0.75), na.rm = T), 2)
+  aaa = round(quantile(xx, prob = c(.5, 0.25, 0.75), na.rm = T, type=2), 2)
   ############################
   stattt = paste(aaa[1], " (", aaa[2], ", ", aaa[3], ")", sep = "")
   if(na.ct > 0)
