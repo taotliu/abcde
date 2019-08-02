@@ -23,7 +23,8 @@ con_sum00 = function(xx){
   ###########################
   aaa = round(quantile(xx, prob = c(.5, 0.25, 0.75), na.rm = T, type=2), 2)
   ############################
-  stattt = paste(aaa[1], " (", aaa[2], ", ", aaa[3], ")", sep = "")
+  stattt = paste(aaa[1], " (", aaa[2], ", ", aaa[3], "); ",
+                 round(mean(xx, na.rm = T), 2), " ± ", round(sd(xx, na.rm = T), 2), sep = "")
   if(na.ct > 0)
     stattt = paste(stattt, "; NA = ", na.ct, sep = "")
   stattt
@@ -40,11 +41,11 @@ con_summ = function(x, by, test){
   all = con_sum00(x)
   output = c(output, all)
   if(test & (length(unique(by)) == 2) )
-    test.out = paste(signif(t.test(x ~ by)$p.value, 3), "(t);",
-                     signif(wilcox.test(x ~ by, exact = F)$p.value, 3), "(Rank-sum)")
+    test.out = paste(round(t.test(x ~ by)$p.value, 3), "(t);",
+                     round(wilcox.test(x ~ by, exact = F)$p.value, 3), "(Rank-sum)")
   else
-    test.out = paste(signif(kruskal.test(x, by)$p.value, 3), "(K-W)",
-                     signif(anova(lm(x ~ as.factor(by)))$"Pr(>F)"[1], 3), "ANOVA")
+    test.out = paste(round(kruskal.test(x, by)$p.value, 3), "(K-W)",
+                     round(anova(lm(x ~ as.factor(by)))$"Pr(>F)"[1], 3), "(ANOVA)")
 
   output = c(output, test.out)
   output
