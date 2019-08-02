@@ -39,10 +39,14 @@ con_summ = function(x, by, test){
   }
   all = con_sum00(x)
   output = c(output, all)
-  if(test)
-    output = c(output,
-               paste(signif(t.test(x ~ by)$p.value, 3), "(t-test);",
-                     signif(wilcox.test(x ~ by, exact = F)$p.value, 3), "(Rank-sum test)"))
+  if(test & (length(unique(by)) == 2) )
+    test.out = paste(signif(t.test(x ~ by)$p.value, 3), "(t);",
+                     signif(wilcox.test(x ~ by, exact = F)$p.value, 3), "(Rank-sum)")
+  else
+    test.out = paste(signif(kruskal.test(x, by)$p.value, 3), "(K-W)",
+                     signif(anova(lm(x ~ as.factor(by)))$"Pr(>F)"[1], 3), "ANOVA")
+
+  output = c(output, test.out)
   output
 }
 
