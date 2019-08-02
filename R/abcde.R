@@ -44,7 +44,7 @@ con_summ = function(x, by, test){
     test.out = paste(round(t.test(x ~ by)$p.value, 3), "(t);",
                      round(wilcox.test(x ~ by, exact = F)$p.value, 3), "(Rank-sum)")
   else
-    test.out = paste(round(kruskal.test(x, by)$p.value, 3), "(K-W)",
+    test.out = paste(round(kruskal.test(x, by)$p.value, 3), "(K-W);",
                      round(anova(lm(x ~ as.factor(by)))$"Pr(>F)"[1], 3), "(ANOVA)")
 
   output = c(output, test.out)
