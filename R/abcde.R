@@ -32,7 +32,7 @@ con_sum00 = function(xx){
 
 
 con_summ = function(x, by, test){
-  by_cat = unique(by)
+  by_cat = levels(as.factor(by))
   output = c("", "")
   for(vv in by_cat){
     foo = con_sum00(x[by == vv])
@@ -82,7 +82,7 @@ dis_sum00 = function(xx, ref = table(xx), includeNA = F){
 
 
 dis_summ = function(x, by, test){
-  by_cat = unique(by)
+  by_cat = levels(as.factor(by))
   output = names(table(x, useNA = "ifany"))
   for(vv in by_cat){
     foo = dis_sum00(x[by == vv], ref = table(x), includeNA = sum(is.na(x))>0)
