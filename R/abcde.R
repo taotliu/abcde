@@ -114,6 +114,9 @@ dis_summ = function(x, by, test){
 
 summary_tab = function(xlist = c("Age", "Absolute.CD4.Count.(cells/uL)", "Gender"), by = "Told.had.HCV",
                        data = hcv, test = F){
+
+  ## udpated Aug 13th 2019
+
   if(is.null(by)){
     test = F
     by = "noMeaning"
