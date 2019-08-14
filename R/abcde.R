@@ -116,6 +116,8 @@ summary_tab = function(xlist = c("Age", "Absolute.CD4.Count.(cells/uL)", "Gender
                        data = hcv, test = F){
 
   ## udpated Aug 13th 2019
+  print(levels(as.factor(data[, by])))
+
 
   if(is.null(by)){
     test = F
