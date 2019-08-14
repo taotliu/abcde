@@ -83,6 +83,7 @@ dis_sum00 = function(xx, ref = table(xx), includeNA = F){
 
 dis_summ = function(x, by, test){
   by_cat = levels(as.factor(by))
+
   output = names(table(x, useNA = "ifany"))
   for(vv in by_cat){
     foo = dis_sum00(x[by == vv], ref = table(x), includeNA = sum(is.na(x))>0)
@@ -116,8 +117,6 @@ summary_tab = function(xlist = c("Age", "Absolute.CD4.Count.(cells/uL)", "Gender
                        data = hcv, test = F){
 
   ## udpated Aug 13th 2019
-  print(levels(as.factor(data[, by])))
-
 
   if(is.null(by)){
     test = F
@@ -143,7 +142,7 @@ summary_tab = function(xlist = c("Age", "Absolute.CD4.Count.(cells/uL)", "Gender
   rownames(outp) = NULL
 
   middle =  NULL
-  for(ww in unique(data[, by])){
+  for(ww in levels(as.factor(data[, by]))){
     middle = c(middle, paste(by, ": ", ww, " (N = ", sum(data[, by] == ww), ")", sep = ""))
   }
 
@@ -159,4 +158,5 @@ summary_tab = function(xlist = c("Age", "Absolute.CD4.Count.(cells/uL)", "Gender
     outp = outp[, c(1, 2, 5)]
   outp
 }
+
 
