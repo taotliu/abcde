@@ -139,7 +139,7 @@ summary_tab = function(xlist = c("Age", "Absolute.CD4.Count.(cells/uL)", "Gender
 
   middle =  NULL
   for(ww in unique(data[, by])){
-    middle = c(middle, paste(by, ": ", ww, "; (N = ", sum(data[, by] == ww), ")", sep = ""))
+    middle = c(middle, paste(by, ": ", ww, " (N = ", sum(data[, by] == ww), ")", sep = ""))
   }
 
   if(!test) colnames(outp) = c("Variable", "Level", middle,
