@@ -118,7 +118,6 @@ dis_summ = function(x, by, test){
 summary_tab = function(xlist = names(data), by = NULL, data, test = F){
 
   ## udpated Aug 13th 2019
-
   if(is.null(by)){
     test = F
     by = "noMeaning"
@@ -161,6 +160,6 @@ summary_tab = function(xlist = names(data), by = NULL, data, test = F){
 
 }
 
-summary_tab(names(iris), data=iris)
+summary_tab(names(iris),  data=iris)
 
 
