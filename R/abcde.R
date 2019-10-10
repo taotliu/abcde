@@ -161,6 +161,6 @@ summary_tab = function(xlist = names(data), by = NULL, data, test = F){
 
 }
 
-summary_tab(names(iris), data=iris)
+summary_tab(names(iris),  data=iris)
 
 
