@@ -40,14 +40,16 @@ con_summ = function(x, by, test){
   }
   all = con_sum00(x)
   output = c(output, all)
-  if(test & (length(unique(by)) == 2) )
+  if(test){
+    if(length(unique(by)) == 2)
     test.out = paste(round(t.test(x ~ by)$p.value, 3), "(t);",
                      round(wilcox.test(x ~ by, exact = F)$p.value, 3), "(Rank-sum)")
-  else
+    else
     test.out = paste(round(kruskal.test(x, by)$p.value, 3), "(K-W);",
                      round(anova(lm(x ~ as.factor(by)))$"Pr(>F)"[1], 3), "(ANOVA)")
 
-  output = c(output, test.out)
+    output = c(output, test.out)
+  }
   output
 }
 
@@ -113,8 +115,7 @@ dis_summ = function(x, by, test){
 
 
 
-summary_tab = function(xlist = c("Age", "Absolute.CD4.Count.(cells/uL)", "Gender"), by = "Told.had.HCV",
-                       data = hcv, test = F){
+summary_tab = function(xlist = names(data), by = NULL, data, test = F){
 
   ## udpated Aug 13th 2019
 
@@ -153,10 +154,13 @@ summary_tab = function(xlist = c("Age", "Absolute.CD4.Count.(cells/uL)", "Gender
                        paste("All  (N = ", dim(data)[1],  ")", sep = ""),
                        "p value")
 
-
   if(by == "noMeaning")
     outp = outp[, c(1, 2, 5)]
+
   outp
+
 }
+
+summary_tab(names(iris), data=iris)
 
 
