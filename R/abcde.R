@@ -129,13 +129,13 @@ summary_tab = function(xlist = names(data), by = NULL, data, test = F){
     #######################################
     if(is.numeric(data[, i])){
       tmp = con_summ(data[, i], by= data[, by], test)
-      tmp[1] = i
+      tmp[1] = ifelse(is.null(expss::var_lab(data[,i])), i, expss::ar_lab(data[,i]))
       outp = rbind(outp, tmp)
     }
     ########################################
     if(is.character(data[, i]) | is.factor(data[, i]) ){
       tmp = dis_summ(data[, i], by= data[, by], test)
-      tmp[1, 1] = i
+      tmp[1, 1] = ifelse(is.null(expss::var_lab(data[,i])), i, expss::var_lab(data[,i]))
       outp = rbind(outp, tmp)
     }
   }
